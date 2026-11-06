@@ -1,9 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using BpfBuilder.Api.Auth;
-using BpfBuilder.Application.Auth;
-using BpfBuilder.Application.Contracts.Auth;
-
 namespace BpfBuilder.Api.Controllers;
 
 [ApiController]

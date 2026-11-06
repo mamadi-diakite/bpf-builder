@@ -17,6 +17,31 @@ namespace BpfBuilder.Infrastructure.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.14");
 
+            modelBuilder.Entity("BpfBuilder.Domain.Activity.ActivityImport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("FiscalYearId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ImportedAtUtc")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FiscalYearId")
+                        .IsUnique();
+
+                    b.ToTable("ActivityImports", (string)null);
+                });
+
             modelBuilder.Entity("BpfBuilder.Domain.FiscalYear", b =>
                 {
                     b.Property<Guid>("Id")
@@ -175,6 +200,235 @@ namespace BpfBuilder.Infrastructure.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("BpfBuilder.Domain.Activity.ActivityImport", b =>
+                {
+                    b.HasOne("BpfBuilder.Domain.FiscalYear", null)
+                        .WithMany()
+                        .HasForeignKey("FiscalYearId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsMany("BpfBuilder.Domain.Activity.ImportedCost", "Costs", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<Guid>("ActivityImportId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<decimal>("Amount")
+                                .HasPrecision(14, 2)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Category")
+                                .IsRequired()
+                                .HasMaxLength(40)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Label")
+                                .HasMaxLength(200)
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ActivityImportId");
+
+                            b1.ToTable("ImportedCosts", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("ActivityImportId");
+                        });
+
+                    b.OwnsMany("BpfBuilder.Domain.Activity.ImportedLearner", "Learners", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<Guid>("ActivityImportId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Category")
+                                .IsRequired()
+                                .HasMaxLength(40)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<decimal>("HoursAttended")
+                                .HasPrecision(14, 2)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("LearnerCode")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("SessionCode")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ActivityImportId");
+
+                            b1.ToTable("ImportedLearners", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("ActivityImportId");
+                        });
+
+                    b.OwnsMany("BpfBuilder.Domain.Activity.ImportedRevenue", "Revenue", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<Guid>("ActivityImportId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<decimal>("Amount")
+                                .HasPrecision(14, 2)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<DateOnly>("Date")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("FormLine")
+                                .IsRequired()
+                                .HasMaxLength(40)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Label")
+                                .HasMaxLength(200)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("SessionCode")
+                                .HasMaxLength(200)
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ActivityImportId");
+
+                            b1.ToTable("ImportedRevenue", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("ActivityImportId");
+                        });
+
+                    b.OwnsMany("BpfBuilder.Domain.Activity.ImportedSession", "Sessions", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<Guid>("ActivityImportId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Code")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("DeliveryMode")
+                                .IsRequired()
+                                .HasMaxLength(40)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("DistanceLearning")
+                                .IsRequired()
+                                .HasMaxLength(40)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<DateOnly>("EndDate")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("NsfCode")
+                                .IsRequired()
+                                .HasMaxLength(40)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<decimal>("PlannedHours")
+                                .HasPrecision(14, 2)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("RncpLevel")
+                                .HasMaxLength(40)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<DateOnly>("StartDate")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Title")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("TrainingGoal")
+                                .IsRequired()
+                                .HasMaxLength(40)
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ActivityImportId");
+
+                            b1.ToTable("ImportedSessions", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("ActivityImportId");
+                        });
+
+                    b.OwnsMany("BpfBuilder.Domain.Activity.ImportedTrainer", "Trainers", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<Guid>("ActivityImportId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<decimal>("HoursDelivered")
+                                .HasPrecision(14, 2)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("SessionCode")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("TrainerCode")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Type")
+                                .IsRequired()
+                                .HasMaxLength(40)
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ActivityImportId");
+
+                            b1.ToTable("ImportedTrainers", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("ActivityImportId");
+                        });
+
+                    b.Navigation("Costs");
+
+                    b.Navigation("Learners");
+
+                    b.Navigation("Revenue");
+
+                    b.Navigation("Sessions");
+
+                    b.Navigation("Trainers");
                 });
 
             modelBuilder.Entity("BpfBuilder.Domain.FiscalYear", b =>

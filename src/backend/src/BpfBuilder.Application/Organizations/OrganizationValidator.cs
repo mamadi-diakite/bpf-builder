@@ -1,6 +1,3 @@
-using BpfBuilder.Application.Contracts.Organizations;
-using BpfBuilder.Domain;
-
 namespace BpfBuilder.Application.Organizations;
 
 /// <summary>Checks every field at once, with messages meant for the form.</summary>

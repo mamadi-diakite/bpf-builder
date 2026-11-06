@@ -1,5 +1,3 @@
-using BpfBuilder.Domain;
-
 namespace BpfBuilder.Application.Users;
 
 public interface IUserRepository

@@ -1,6 +1,3 @@
-using BpfBuilder.Application.Common;
-using BpfBuilder.Application.Organizations;
-
 namespace BpfBuilder.Application.Tests;
 
 public sealed class OrganizationServiceTests

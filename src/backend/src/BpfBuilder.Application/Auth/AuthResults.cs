@@ -1,5 +1,3 @@
-using BpfBuilder.Application.Contracts.Auth;
-
 namespace BpfBuilder.Application.Auth;
 
 public enum ChangePasswordStatus

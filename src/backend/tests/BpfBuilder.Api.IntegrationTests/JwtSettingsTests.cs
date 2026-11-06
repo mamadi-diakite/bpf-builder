@@ -1,8 +1,3 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Hosting;
-using BpfBuilder.Api.Auth;
-
 namespace BpfBuilder.Api.IntegrationTests;
 
 public sealed class JwtSettingsTests

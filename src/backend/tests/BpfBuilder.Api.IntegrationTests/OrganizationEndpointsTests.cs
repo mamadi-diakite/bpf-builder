@@ -1,15 +1,3 @@
-using System.Net;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.JsonWebTokens;
-using Microsoft.IdentityModel.Tokens;
-using BpfBuilder.Api.Auth;
-using BpfBuilder.Application.Contracts.Auth;
-using BpfBuilder.Application.Contracts.FiscalYears;
-using BpfBuilder.Application.Contracts.Organizations;
-
 namespace BpfBuilder.Api.IntegrationTests;
 
 public sealed class OrganizationEndpointsTests(DemoDataApiFactory factory) : IClassFixture<DemoDataApiFactory>
@@ -92,7 +80,7 @@ public sealed class OrganizationEndpointsTests(DemoDataApiFactory factory) : ICl
     {
         var anonymous = factory.CreateClient();
         var withoutSubject = factory.CreateClient();
-        withoutSubject.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenWithoutSubject());
+        withoutSubject.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", factory.TokenWithoutSubject());
 
         foreach (var client in new[] { anonymous, withoutSubject })
         {
@@ -147,20 +135,5 @@ public sealed class OrganizationEndpointsTests(DemoDataApiFactory factory) : ICl
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", body!.AccessToken);
 
         return client;
-    }
-
-    private string TokenWithoutSubject()
-    {
-        var settings = factory.Services.GetRequiredService<JwtSettings>();
-
-        return new JsonWebTokenHandler().CreateToken(new SecurityTokenDescriptor
-        {
-            Issuer = settings.Issuer,
-            Audience = settings.Audience,
-            Expires = DateTime.UtcNow.AddMinutes(5),
-            Claims = new Dictionary<string, object> { [JwtClaims.Email] = "ghost@example.com" },
-            SigningCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(settings.SigningKey), SecurityAlgorithms.HmacSha256),
-        });
     }
 }

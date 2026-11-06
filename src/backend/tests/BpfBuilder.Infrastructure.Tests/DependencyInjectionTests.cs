@@ -1,10 +1,3 @@
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using BpfBuilder.Application.Templates;
-using BpfBuilder.Infrastructure.Excel;
-using BpfBuilder.Infrastructure.Persistence;
-
 namespace BpfBuilder.Infrastructure.Tests;
 
 public sealed class DependencyInjectionTests
@@ -61,11 +54,14 @@ public sealed class DependencyInjectionTests
     }
 
     [Fact]
-    public void Registers_the_excel_workbook_writer()
+    public void Registers_the_excel_workbook_writer_reader_and_import_repository()
     {
         using var provider = new ServiceCollection().AddInfrastructure("Data Source=:memory:").BuildServiceProvider();
+        using var scope = provider.CreateScope();
 
         Assert.IsType<ClosedXmlActivityWorkbookWriter>(provider.GetRequiredService<IActivityWorkbookWriter>());
+        Assert.IsType<ClosedXmlActivityWorkbookReader>(provider.GetRequiredService<IActivityWorkbookReader>());
+        Assert.IsType<ActivityImportRepository>(scope.ServiceProvider.GetRequiredService<IActivityImportRepository>());
     }
 
     [Theory]

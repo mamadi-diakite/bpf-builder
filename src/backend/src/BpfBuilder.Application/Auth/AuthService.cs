@@ -1,8 +1,3 @@
-using BpfBuilder.Application.Contracts.Auth;
-using BpfBuilder.Application.Security;
-using BpfBuilder.Application.Users;
-using BpfBuilder.Domain;
-
 namespace BpfBuilder.Application.Auth;
 
 public sealed class AuthService(

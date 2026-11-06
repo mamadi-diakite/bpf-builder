@@ -1,0 +1,13 @@
+global using Microsoft.Data.Sqlite;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.DependencyInjection;
+global using BpfBuilder.Application.Imports;
+global using BpfBuilder.Application.Templates;
+global using BpfBuilder.Domain;
+global using BpfBuilder.Domain.Activity;
+global using BpfBuilder.Infrastructure.Excel;
+global using BpfBuilder.Infrastructure.Persistence;
+global using BpfBuilder.Infrastructure.Security;
+global using BpfBuilder.Infrastructure.Seeding;
+global using ClosedXML.Excel;
+global using Xunit;

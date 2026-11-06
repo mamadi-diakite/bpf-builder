@@ -1,9 +1,3 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using BpfBuilder.Api.Auth;
-using BpfBuilder.Application;
-using BpfBuilder.Application.Auth;
-using BpfBuilder.Infrastructure;
-
 var builder = WebApplication.CreateBuilder(args);
 
 var jwtSettings = JwtSettings.FromConfiguration(builder.Configuration, builder.Environment);

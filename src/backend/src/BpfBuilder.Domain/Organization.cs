@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-
 namespace BpfBuilder.Domain;
 
 /// <summary>The training organization. Profile fields are optional until the BPF is prepared.</summary>

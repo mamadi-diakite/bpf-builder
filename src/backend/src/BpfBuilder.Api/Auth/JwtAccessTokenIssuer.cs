@@ -1,8 +1,3 @@
-using Microsoft.IdentityModel.JsonWebTokens;
-using Microsoft.IdentityModel.Tokens;
-using BpfBuilder.Application.Auth;
-using BpfBuilder.Domain;
-
 namespace BpfBuilder.Api.Auth;
 
 public sealed class JwtAccessTokenIssuer(JwtSettings settings, TimeProvider timeProvider) : IAccessTokenIssuer

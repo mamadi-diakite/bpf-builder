@@ -1,8 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using BpfBuilder.Infrastructure.Persistence;
-using BpfBuilder.Infrastructure.Seeding;
-
 namespace BpfBuilder.Api.IntegrationTests;
 
 public sealed class DemoDataStartupTests(DemoDataApiFactory factory) : IClassFixture<DemoDataApiFactory>

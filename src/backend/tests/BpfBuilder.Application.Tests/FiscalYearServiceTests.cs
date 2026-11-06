@@ -1,8 +1,3 @@
-using BpfBuilder.Application.Common;
-using BpfBuilder.Application.Contracts.FiscalYears;
-using BpfBuilder.Application.FiscalYears;
-using BpfBuilder.Domain;
-
 namespace BpfBuilder.Application.Tests;
 
 public sealed class FiscalYearServiceTests
@@ -11,12 +6,13 @@ public sealed class FiscalYearServiceTests
     private static readonly Guid OwnerId = Guid.NewGuid();
 
     private readonly InMemoryOrganizationRepository _organizations = new();
+    private readonly InMemoryActivityImportRepository _imports = new();
     private readonly FiscalYearService _service;
     private readonly Organization _organization = new(OwnerId, "Northwind Training", Now.UtcDateTime);
 
     public FiscalYearServiceTests()
     {
-        _service = new FiscalYearService(_organizations, new FixedTimeProvider(Now));
+        _service = new FiscalYearService(_organizations, _imports, new FixedTimeProvider(Now));
     }
 
     [Fact]
@@ -36,7 +32,7 @@ public sealed class FiscalYearServiceTests
 
         Assert.Equal(ServiceResultStatus.Ok, result.Status);
         Assert.Equal(
-            new FiscalYearResponse(result.Value!.Id, new DateOnly(2025, 1, 1), new DateOnly(2025, 12, 31), 250_000m, Now.UtcDateTime),
+            new FiscalYearResponse(result.Value!.Id, new DateOnly(2025, 1, 1), new DateOnly(2025, 12, 31), 250_000m, Now.UtcDateTime, null),
             result.Value);
         Assert.Equal(_organization.Id, Assert.Single(_organizations.FiscalYears).OrganizationId);
         Assert.Equal(1, _organizations.SaveCount);
@@ -54,6 +50,24 @@ public sealed class FiscalYearServiceTests
         Assert.Equal([2m, 1m], list.Select(y => y.TotalTurnover));
         Assert.Equal(list[1], await _service.GetAsync(OwnerId, list[1].Id));
         Assert.Null(await _service.GetAsync(OwnerId, Guid.NewGuid()));
+    }
+
+    [Fact]
+    public async Task Shows_when_the_activity_of_a_year_was_imported()
+    {
+        _organizations.Add(_organization);
+        var imported = FiscalYear.CalendarYear(_organization.Id, 2025, 0m, Now.UtcDateTime);
+        var notImported = FiscalYear.CalendarYear(_organization.Id, 2024, 0m, Now.UtcDateTime);
+        _organizations.AddFiscalYear(imported);
+        _organizations.AddFiscalYear(notImported);
+        var importedAt = Now.UtcDateTime.AddHours(1);
+        _imports.Add(new ActivityImport(imported.Id, "activity.xlsx", importedAt, [], [], [], [], []));
+
+        var list = await _service.ListAsync(OwnerId);
+
+        Assert.Equal<DateTime?>([importedAt, null], list.Select(y => y.ImportedAtUtc));
+        Assert.Equal(importedAt, (await _service.GetAsync(OwnerId, imported.Id))!.ImportedAtUtc);
+        Assert.Null((await _service.GetAsync(OwnerId, notImported.Id))!.ImportedAtUtc);
     }
 
     [Theory]

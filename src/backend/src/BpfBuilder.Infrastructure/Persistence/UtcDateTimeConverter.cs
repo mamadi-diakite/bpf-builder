@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-
 namespace BpfBuilder.Infrastructure.Persistence;
 
 /// <summary>SQLite has no time zone support, so dates are stored as UTC and read back as UTC.</summary>

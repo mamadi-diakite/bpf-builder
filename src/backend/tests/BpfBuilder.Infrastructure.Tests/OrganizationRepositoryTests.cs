@@ -1,6 +1,3 @@
-using BpfBuilder.Domain;
-using BpfBuilder.Infrastructure.Persistence;
-
 namespace BpfBuilder.Infrastructure.Tests;
 
 public sealed class OrganizationRepositoryTests : IDisposable

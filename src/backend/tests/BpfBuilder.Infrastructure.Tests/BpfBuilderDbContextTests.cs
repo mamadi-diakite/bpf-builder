@@ -1,6 +1,3 @@
-using BpfBuilder.Domain;
-using Microsoft.EntityFrameworkCore;
-
 namespace BpfBuilder.Infrastructure.Tests;
 
 public sealed class BpfBuilderDbContextTests : IDisposable

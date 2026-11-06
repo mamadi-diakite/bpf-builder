@@ -1,11 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-using BpfBuilder.Application.Auth;
-using BpfBuilder.Application.FiscalYears;
-using BpfBuilder.Application.Organizations;
-using BpfBuilder.Application.Security;
-using BpfBuilder.Application.Templates;
-using BpfBuilder.Application.Users;
-
 namespace BpfBuilder.Application.Tests;
 
 public sealed class ApplicationDependencyInjectionTests
@@ -20,7 +12,9 @@ public sealed class ApplicationDependencyInjectionTests
             .AddSingleton<IPasswordHasher, FakePasswordHasher>()
             .AddSingleton<IAccessTokenIssuer, FakeTokenIssuer>()
             .AddSingleton<IOrganizationRepository, InMemoryOrganizationRepository>()
-            .AddSingleton<IActivityWorkbookWriter, NoWorkbookWriter>();
+            .AddSingleton<IActivityWorkbookWriter, NoWorkbookWriter>()
+            .AddSingleton<IActivityImportRepository, InMemoryActivityImportRepository>()
+            .AddSingleton<IActivityWorkbookReader>(new FakeWorkbookReader(null));
 
         using var provider = services.BuildServiceProvider();
         using var scope = provider.CreateScope();
@@ -29,6 +23,7 @@ public sealed class ApplicationDependencyInjectionTests
         Assert.NotNull(scope.ServiceProvider.GetService<OrganizationService>());
         Assert.NotNull(scope.ServiceProvider.GetService<FiscalYearService>());
         Assert.NotNull(scope.ServiceProvider.GetService<ActivityTemplateService>());
+        Assert.NotNull(scope.ServiceProvider.GetService<ActivityImportService>());
     }
 
     private sealed class NoWorkbookWriter : IActivityWorkbookWriter

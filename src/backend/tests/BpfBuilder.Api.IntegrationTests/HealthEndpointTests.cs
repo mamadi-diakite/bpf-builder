@@ -1,6 +1,3 @@
-using System.Net;
-using System.Net.Http.Json;
-
 namespace BpfBuilder.Api.IntegrationTests;
 
 public sealed class HealthEndpointTests(BpfBuilderApiFactory factory) : IClassFixture<BpfBuilderApiFactory>

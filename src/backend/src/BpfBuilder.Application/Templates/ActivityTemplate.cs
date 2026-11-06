@@ -1,5 +1,3 @@
-using BpfBuilder.Domain.Activity;
-
 namespace BpfBuilder.Application.Templates;
 
 public enum ColumnKind

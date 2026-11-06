@@ -1,6 +1,3 @@
-using BpfBuilder.Application.Contracts.Organizations;
-using BpfBuilder.Application.Organizations;
-
 namespace BpfBuilder.Application.Tests;
 
 public sealed class OrganizationValidatorTests

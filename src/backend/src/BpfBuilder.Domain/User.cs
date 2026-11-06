@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace BpfBuilder.Domain;
 
 public sealed class User

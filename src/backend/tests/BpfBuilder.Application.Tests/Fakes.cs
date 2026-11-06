@@ -1,9 +1,3 @@
-using BpfBuilder.Application.Auth;
-using BpfBuilder.Application.Organizations;
-using BpfBuilder.Application.Security;
-using BpfBuilder.Application.Users;
-using BpfBuilder.Domain;
-
 namespace BpfBuilder.Application.Tests;
 
 internal sealed class InMemoryUserRepository : IUserRepository
@@ -79,5 +73,44 @@ internal sealed class InMemoryOrganizationRepository : IOrganizationRepository
     {
         SaveCount++;
         return Task.CompletedTask;
+    }
+}
+
+internal sealed class InMemoryActivityImportRepository : IActivityImportRepository
+{
+    public List<ActivityImport> Imports { get; } = [];
+
+    public int SaveCount { get; private set; }
+
+    public Task<ActivityImport?> FindByFiscalYearAsync(Guid fiscalYearId, CancellationToken cancellationToken) =>
+        Task.FromResult(Imports.SingleOrDefault(i => i.FiscalYearId == fiscalYearId));
+
+    public Task<bool> ExistsAsync(Guid fiscalYearId, CancellationToken cancellationToken) =>
+        Task.FromResult(Imports.Any(i => i.FiscalYearId == fiscalYearId));
+
+    public Task<IReadOnlyDictionary<Guid, DateTime>> ListImportDatesAsync(
+        IReadOnlyCollection<Guid> fiscalYearIds,
+        CancellationToken cancellationToken) =>
+        Task.FromResult<IReadOnlyDictionary<Guid, DateTime>>(
+            Imports.Where(i => fiscalYearIds.Contains(i.FiscalYearId)).ToDictionary(i => i.FiscalYearId, i => i.ImportedAtUtc));
+
+    public void Add(ActivityImport import) => Imports.Add(import);
+
+    public Task SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        SaveCount++;
+        return Task.CompletedTask;
+    }
+}
+
+/// <summary>Returns the given workbook, or null to stand for an unreadable file.</summary>
+internal sealed class FakeWorkbookReader(ActivityWorkbook? workbook) : IActivityWorkbookReader
+{
+    public int ReadCount { get; private set; }
+
+    public ActivityWorkbook? Read(Stream content)
+    {
+        ReadCount++;
+        return workbook;
     }
 }

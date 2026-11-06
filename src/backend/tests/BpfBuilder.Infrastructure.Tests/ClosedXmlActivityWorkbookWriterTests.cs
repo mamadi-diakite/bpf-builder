@@ -1,8 +1,3 @@
-using ClosedXML.Excel;
-using BpfBuilder.Application.Templates;
-using BpfBuilder.Domain.Activity;
-using BpfBuilder.Infrastructure.Excel;
-
 namespace BpfBuilder.Infrastructure.Tests;
 
 public sealed class ClosedXmlActivityWorkbookWriterTests

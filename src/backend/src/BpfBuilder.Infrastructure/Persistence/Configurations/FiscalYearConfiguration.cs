@@ -1,7 +1,3 @@
-using BpfBuilder.Domain;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 namespace BpfBuilder.Infrastructure.Persistence.Configurations;
 
 internal sealed class FiscalYearConfiguration : IEntityTypeConfiguration<FiscalYear>

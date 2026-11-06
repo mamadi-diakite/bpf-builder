@@ -1,8 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using BpfBuilder.Application.Security;
-using BpfBuilder.Domain;
-using BpfBuilder.Infrastructure.Persistence;
-
 namespace BpfBuilder.Infrastructure.Seeding;
 
 public sealed class DemoDataSeeder(BpfBuilderDbContext db, IPasswordHasher passwordHasher, TimeProvider timeProvider)

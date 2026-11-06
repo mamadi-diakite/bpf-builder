@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace BpfBuilder.Domain;
 
 internal static class Guard

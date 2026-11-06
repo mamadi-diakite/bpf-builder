@@ -1,5 +1,3 @@
-using BpfBuilder.Domain.Activity;
-
 namespace BpfBuilder.Domain.Tests;
 
 public sealed class ReferenceListTests

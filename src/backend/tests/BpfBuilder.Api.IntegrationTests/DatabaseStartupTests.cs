@@ -1,7 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using BpfBuilder.Infrastructure.Persistence;
-
 namespace BpfBuilder.Api.IntegrationTests;
 
 public sealed class DatabaseStartupTests(BpfBuilderApiFactory factory) : IClassFixture<BpfBuilderApiFactory>

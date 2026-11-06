@@ -1,7 +1,3 @@
-using BpfBuilder.Application.Common;
-using BpfBuilder.Application.Contracts.Organizations;
-using BpfBuilder.Domain;
-
 namespace BpfBuilder.Application.Organizations;
 
 /// <summary>Each account owns at most one organization, created when section A is first saved.</summary>

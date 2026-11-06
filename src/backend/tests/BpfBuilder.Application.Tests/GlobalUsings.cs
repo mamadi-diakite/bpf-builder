@@ -1,0 +1,17 @@
+global using System.Globalization;
+global using Microsoft.Extensions.DependencyInjection;
+global using BpfBuilder.Application.Auth;
+global using BpfBuilder.Application.Common;
+global using BpfBuilder.Application.Contracts.Auth;
+global using BpfBuilder.Application.Contracts.FiscalYears;
+global using BpfBuilder.Application.Contracts.Imports;
+global using BpfBuilder.Application.Contracts.Organizations;
+global using BpfBuilder.Application.FiscalYears;
+global using BpfBuilder.Application.Imports;
+global using BpfBuilder.Application.Organizations;
+global using BpfBuilder.Application.Security;
+global using BpfBuilder.Application.Templates;
+global using BpfBuilder.Application.Users;
+global using BpfBuilder.Domain;
+global using BpfBuilder.Domain.Activity;
+global using Xunit;

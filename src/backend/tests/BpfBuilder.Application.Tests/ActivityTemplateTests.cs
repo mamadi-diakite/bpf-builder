@@ -1,6 +1,3 @@
-using BpfBuilder.Application.Templates;
-using BpfBuilder.Domain.Activity;
-
 namespace BpfBuilder.Application.Tests;
 
 public sealed class ActivityTemplateTests

@@ -1,7 +1,3 @@
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using BpfBuilder.Infrastructure.Persistence;
-
 namespace BpfBuilder.Infrastructure.Tests;
 
 /// <summary>In-memory SQLite database that lives as long as its connection stays open.</summary>

@@ -1,10 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using BpfBuilder.Api.Auth;
-using BpfBuilder.Application.Common;
-using BpfBuilder.Application.Contracts.FiscalYears;
-using BpfBuilder.Application.FiscalYears;
-
 namespace BpfBuilder.Api.Controllers;
 
 [ApiController]

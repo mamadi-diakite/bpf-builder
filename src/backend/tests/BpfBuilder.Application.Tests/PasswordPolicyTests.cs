@@ -1,5 +1,3 @@
-using BpfBuilder.Application.Auth;
-
 namespace BpfBuilder.Application.Tests;
 
 public sealed class PasswordPolicyTests

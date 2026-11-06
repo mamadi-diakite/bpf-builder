@@ -1,11 +1,9 @@
-using BpfBuilder.Application.Common;
-using BpfBuilder.Application.Contracts.FiscalYears;
-using BpfBuilder.Application.Organizations;
-using BpfBuilder.Domain;
-
 namespace BpfBuilder.Application.FiscalYears;
 
-public sealed class FiscalYearService(IOrganizationRepository organizations, TimeProvider timeProvider)
+public sealed class FiscalYearService(
+    IOrganizationRepository organizations,
+    IActivityImportRepository imports,
+    TimeProvider timeProvider)
 {
     private const string BothDatesMessage = "Enter both dates, or none for the last calendar year.";
 
@@ -19,8 +17,9 @@ public sealed class FiscalYearService(IOrganizationRepository organizations, Tim
         }
 
         var fiscalYears = await organizations.ListFiscalYearsAsync(organization.Id, cancellationToken);
+        var importDates = await imports.ListImportDatesAsync([.. fiscalYears.Select(y => y.Id)], cancellationToken);
 
-        return [.. fiscalYears.Select(ToResponse)];
+        return [.. fiscalYears.Select(y => ToResponse(y, importDates))];
     }
 
     public async Task<FiscalYearResponse?> GetAsync(Guid ownerId, Guid fiscalYearId, CancellationToken cancellationToken = default)
@@ -30,7 +29,14 @@ public sealed class FiscalYearService(IOrganizationRepository organizations, Tim
             ? null
             : await organizations.FindFiscalYearAsync(organization.Id, fiscalYearId, cancellationToken);
 
-        return fiscalYear is null ? null : ToResponse(fiscalYear);
+        if (fiscalYear is null)
+        {
+            return null;
+        }
+
+        var importDates = await imports.ListImportDatesAsync([fiscalYear.Id], cancellationToken);
+
+        return ToResponse(fiscalYear, importDates);
     }
 
     /// <returns>Not found while the user has no organization.</returns>
@@ -73,7 +79,7 @@ public sealed class FiscalYearService(IOrganizationRepository organizations, Tim
         organizations.AddFiscalYear(fiscalYear);
         await organizations.SaveChangesAsync(cancellationToken);
 
-        return ServiceResult<FiscalYearResponse>.Ok(ToResponse(fiscalYear));
+        return ServiceResult<FiscalYearResponse>.Ok(ToResponse(fiscalYear, new Dictionary<Guid, DateTime>()));
     }
 
     private static (DateOnly Start, DateOnly End)? ResolvePeriod(
@@ -108,6 +114,12 @@ public sealed class FiscalYearService(IOrganizationRepository organizations, Tim
         return (start, end);
     }
 
-    private static FiscalYearResponse ToResponse(FiscalYear y) =>
-        new(y.Id, y.StartDate, y.EndDate, y.TotalTurnover, y.CreatedAtUtc);
+    private static FiscalYearResponse ToResponse(FiscalYear y, IReadOnlyDictionary<Guid, DateTime> importDates) =>
+        new(
+            y.Id,
+            y.StartDate,
+            y.EndDate,
+            y.TotalTurnover,
+            y.CreatedAtUtc,
+            importDates.TryGetValue(y.Id, out var importedAtUtc) ? importedAtUtc : null);
 }

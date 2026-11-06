@@ -1,7 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using BpfBuilder.Application.Organizations;
-using BpfBuilder.Domain;
-
 namespace BpfBuilder.Infrastructure.Persistence;
 
 public sealed class OrganizationRepository(BpfBuilderDbContext db) : IOrganizationRepository

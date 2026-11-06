@@ -1,6 +1,3 @@
-using BpfBuilder.Domain;
-using Microsoft.EntityFrameworkCore;
-
 namespace BpfBuilder.Infrastructure.Persistence;
 
 public sealed class BpfBuilderDbContext(DbContextOptions<BpfBuilderDbContext> options) : DbContext(options)
@@ -10,6 +7,8 @@ public sealed class BpfBuilderDbContext(DbContextOptions<BpfBuilderDbContext> op
     public DbSet<Organization> Organizations => Set<Organization>();
 
     public DbSet<FiscalYear> FiscalYears => Set<FiscalYear>();
+
+    public DbSet<ActivityImport> ActivityImports => Set<ActivityImport>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) =>
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(BpfBuilderDbContext).Assembly);

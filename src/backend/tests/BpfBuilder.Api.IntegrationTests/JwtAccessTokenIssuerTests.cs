@@ -1,8 +1,3 @@
-using System.Security.Claims;
-using Microsoft.IdentityModel.JsonWebTokens;
-using BpfBuilder.Api.Auth;
-using BpfBuilder.Domain;
-
 namespace BpfBuilder.Api.IntegrationTests;
 
 public sealed class JwtAccessTokenIssuerTests

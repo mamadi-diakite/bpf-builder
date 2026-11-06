@@ -1,7 +1,3 @@
-using ClosedXML.Excel;
-using BpfBuilder.Application.Templates;
-using BpfBuilder.Domain.Activity;
-
 namespace BpfBuilder.Infrastructure.Excel;
 
 public sealed class ClosedXmlActivityWorkbookWriter : IActivityWorkbookWriter

@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-
 namespace BpfBuilder.Api.Controllers;
 
 [ApiController]

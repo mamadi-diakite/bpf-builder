@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Data.Sqlite;
-
 namespace BpfBuilder.Api.IntegrationTests;
 
 /// <summary>Runs the API against its own throwaway SQLite file.</summary>
@@ -24,6 +20,22 @@ public class BpfBuilderApiFactory : WebApplicationFactory<Program>
         builder.UseSetting("Database:ApplyMigrationsOnStartup", "true");
         builder.UseSetting("Database:SeedDemoData", SeedDemoData.ToString());
         builder.UseSetting("Jwt:SigningKey", TestSigningKey);
+    }
+
+    /// <summary>A valid token that names no user.</summary>
+    public string TokenWithoutSubject()
+    {
+        var settings = Services.GetRequiredService<JwtSettings>();
+
+        return new JsonWebTokenHandler().CreateToken(new SecurityTokenDescriptor
+        {
+            Issuer = settings.Issuer,
+            Audience = settings.Audience,
+            Expires = DateTime.UtcNow.AddMinutes(5),
+            Claims = new Dictionary<string, object> { [JwtClaims.Email] = "ghost@example.com" },
+            SigningCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(settings.SigningKey), SecurityAlgorithms.HmacSha256),
+        });
     }
 
     protected override void Dispose(bool disposing)

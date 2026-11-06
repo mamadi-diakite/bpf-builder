@@ -1,9 +1,3 @@
-using System.Net;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using ClosedXML.Excel;
-using BpfBuilder.Application.Contracts.Auth;
-
 namespace BpfBuilder.Api.IntegrationTests;
 
 public sealed class TemplateEndpointsTests(DemoDataApiFactory factory) : IClassFixture<DemoDataApiFactory>
