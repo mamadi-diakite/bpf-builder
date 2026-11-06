@@ -11,7 +11,10 @@ public sealed class DemoDataSeeder(BpfBuilderDbContext db, IPasswordHasher passw
     public const string DemoEmail = "camille.durand@example.com";
     public const string DemoOrganizationName = "Horizon Skills Training";
 
-    /// <summary>One fictional account with a fictional training organization (sections A and H filled).</summary>
+    /// <summary>
+    /// One fictional account with a fictional training organization (sections A and H filled)
+    /// and its last two calendar fiscal years.
+    /// </summary>
     /// <returns><c>false</c> when the database already holds users.</returns>
     public async Task<bool> SeedAsync(CancellationToken cancellationToken = default)
     {
@@ -49,6 +52,9 @@ public sealed class DemoDataSeeder(BpfBuilderDbContext db, IPasswordHasher passw
 
         db.Users.Add(user);
         db.Organizations.Add(organization);
+        db.FiscalYears.AddRange(
+            FiscalYear.CalendarYear(organization.Id, now.Year - 2, 412_500m, now),
+            FiscalYear.CalendarYear(organization.Id, now.Year - 1, 468_900m, now));
         await db.SaveChangesAsync(cancellationToken);
 
         return true;

@@ -45,6 +45,21 @@ public sealed class DemoDataSeederTests : IDisposable
     }
 
     [Fact]
+    public async Task Seeds_the_last_two_calendar_fiscal_years()
+    {
+        await SeedAsync();
+
+        await using var db = _database.CreateContext();
+        var organization = await db.Organizations.SingleAsync();
+        var years = await db.FiscalYears.OrderBy(y => y.StartDate).ToListAsync();
+
+        Assert.Equal([new DateOnly(2024, 1, 1), new DateOnly(2025, 1, 1)], years.Select(y => y.StartDate));
+        Assert.Equal([new DateOnly(2024, 12, 31), new DateOnly(2025, 12, 31)], years.Select(y => y.EndDate));
+        Assert.All(years, y => Assert.Equal(organization.Id, y.OrganizationId));
+        Assert.All(years, y => Assert.True(y.TotalTurnover > 0));
+    }
+
+    [Fact]
     public async Task Second_run_adds_nothing()
     {
         await SeedAsync();
@@ -54,6 +69,7 @@ public sealed class DemoDataSeederTests : IDisposable
         await using var db = _database.CreateContext();
         Assert.Equal(1, await db.Users.CountAsync());
         Assert.Equal(1, await db.Organizations.CountAsync());
+        Assert.Equal(2, await db.FiscalYears.CountAsync());
     }
 
     [Fact]

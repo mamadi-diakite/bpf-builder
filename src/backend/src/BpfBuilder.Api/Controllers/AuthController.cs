@@ -18,7 +18,7 @@ public sealed class AuthController(AuthService authService) : ControllerBase
 
         return result.Response is { } response
             ? CreatedAtAction(nameof(Me), response)
-            : InvalidRequest(result.Errors);
+            : this.InvalidRequest(result.Errors);
     }
 
     [HttpPost("login")]
@@ -58,20 +58,7 @@ public sealed class AuthController(AuthService authService) : ControllerBase
         {
             ChangePasswordStatus.Changed => NoContent(),
             ChangePasswordStatus.UserNotFound => Unauthorized(),
-            _ => InvalidRequest(result.Errors),
+            _ => this.InvalidRequest(result.Errors),
         };
-    }
-
-    private ActionResult InvalidRequest(IReadOnlyDictionary<string, string[]> errors)
-    {
-        foreach (var (field, messages) in errors)
-        {
-            foreach (var message in messages)
-            {
-                ModelState.AddModelError(field, message);
-            }
-        }
-
-        return ValidationProblem();
     }
 }

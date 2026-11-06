@@ -1,4 +1,5 @@
 using BpfBuilder.Application.Auth;
+using BpfBuilder.Application.Organizations;
 using BpfBuilder.Application.Security;
 using BpfBuilder.Application.Users;
 using BpfBuilder.Domain;
@@ -50,4 +51,33 @@ internal sealed class FakeTokenIssuer : IAccessTokenIssuer
 internal sealed class FixedTimeProvider(DateTimeOffset now) : TimeProvider
 {
     public override DateTimeOffset GetUtcNow() => now;
+}
+
+internal sealed class InMemoryOrganizationRepository : IOrganizationRepository
+{
+    public List<Organization> Organizations { get; } = [];
+
+    public List<FiscalYear> FiscalYears { get; } = [];
+
+    public int SaveCount { get; private set; }
+
+    public Task<Organization?> FindByOwnerAsync(Guid ownerId, CancellationToken cancellationToken) =>
+        Task.FromResult(Organizations.SingleOrDefault(o => o.OwnerId == ownerId));
+
+    public void Add(Organization organization) => Organizations.Add(organization);
+
+    public Task<IReadOnlyList<FiscalYear>> ListFiscalYearsAsync(Guid organizationId, CancellationToken cancellationToken) =>
+        Task.FromResult<IReadOnlyList<FiscalYear>>(
+            [.. FiscalYears.Where(y => y.OrganizationId == organizationId).OrderByDescending(y => y.StartDate)]);
+
+    public Task<FiscalYear?> FindFiscalYearAsync(Guid organizationId, Guid fiscalYearId, CancellationToken cancellationToken) =>
+        Task.FromResult(FiscalYears.SingleOrDefault(y => y.Id == fiscalYearId && y.OrganizationId == organizationId));
+
+    public void AddFiscalYear(FiscalYear fiscalYear) => FiscalYears.Add(fiscalYear);
+
+    public Task SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        SaveCount++;
+        return Task.CompletedTask;
+    }
 }

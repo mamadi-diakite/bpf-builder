@@ -78,6 +78,13 @@ public sealed partial class Organization
 
     public DateTime UpdatedAtUtc { get; private set; }
 
+    /// <summary>True for 14 digits that pass the Luhn check, without spaces.</summary>
+    public static bool IsValidSiret(string? siret) =>
+        siret is { Length: SiretLength } && siret.All(char.IsAsciiDigit) && PassesLuhnCheck(siret);
+
+    /// <summary>True for an upper-case code such as 85.59A.</summary>
+    public static bool IsValidNafCode(string? nafCode) => nafCode is not null && NafCodePattern().IsMatch(nafCode);
+
     public void UpdateIdentification(
         string name,
         string? declarationNumber,
@@ -104,12 +111,12 @@ public sealed partial class Organization
         var newPhone = Guard.Optional(phone, nameof(phone), PhoneMaxLength);
         var newContactEmail = OptionalEmail(contactEmail, nameof(contactEmail));
 
-        if (newSiret is not null && !PassesLuhnCheck(newSiret))
+        if (newSiret is not null && !IsValidSiret(newSiret))
         {
             throw new ArgumentException("SIRET check digit is not valid.", nameof(siret));
         }
 
-        if (newNafCode is not null && !NafCodePattern().IsMatch(newNafCode))
+        if (newNafCode is not null && !IsValidNafCode(newNafCode))
         {
             throw new ArgumentException("NAF code must look like 85.59A.", nameof(nafCode));
         }

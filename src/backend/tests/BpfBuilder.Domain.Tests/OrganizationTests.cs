@@ -96,6 +96,28 @@ public sealed class OrganizationTests
     }
 
     [Theory]
+    [InlineData(ValidSiret, true)]
+    [InlineData("99900000000012", false)]
+    [InlineData("9990000000001A", false)]
+    [InlineData("999 000 000 00011", false)]
+    [InlineData("", false)]
+    [InlineData(null, false)]
+    public void Checks_a_siret(string? value, bool expected)
+    {
+        Assert.Equal(expected, Organization.IsValidSiret(value));
+    }
+
+    [Theory]
+    [InlineData("85.59A", true)]
+    [InlineData("85.59a", false)]
+    [InlineData("8559A", false)]
+    [InlineData(null, false)]
+    public void Checks_a_naf_code(string? value, bool expected)
+    {
+        Assert.Equal(expected, Organization.IsValidNafCode(value));
+    }
+
+    [Theory]
     [InlineData("8559A")]
     [InlineData("85.5A")]
     [InlineData("85.591")]
