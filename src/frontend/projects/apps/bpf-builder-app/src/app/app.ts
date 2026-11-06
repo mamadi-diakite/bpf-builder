@@ -11,6 +11,8 @@ import { Shell } from '@bpf-builder/shared/ui';
     <bpf-shell appName="BPF Builder" [apiStatus]="apiStatus()">
       <ng-container shellNav>
         @if (user(); as user) {
+          <a routerLink="/organization" class="text-emerald-600">Organization</a>
+          <a routerLink="/fiscal-years" class="text-emerald-600">Fiscal years</a>
           <span class="text-slate-600" data-testid="user-name">{{ user.displayName }}</span>
           <a routerLink="/account/password" class="text-emerald-600">Change password</a>
           <button type="button" class="text-emerald-600" (click)="logOut()">Log out</button>

@@ -49,8 +49,21 @@ export class AppHarness {
     await this.fixture.whenStable();
   }
 
-  async submit(): Promise<void> {
-    this.element.querySelector<HTMLButtonElement>('form button[type="submit"]')!.click();
+  /** Picks files in a file input as the browser dialog would. */
+  async choose(id: string, ...files: File[]): Promise<void> {
+    const input = this.element.querySelector<HTMLInputElement>(`#${id}`)!;
+    Object.defineProperty(input, 'files', { value: files, configurable: true });
+    input.dispatchEvent(new Event('change'));
+    await this.fixture.whenStable();
+  }
+
+  async click(selector: string): Promise<void> {
+    this.element.querySelector<HTMLElement>(selector)!.click();
+    await this.fixture.whenStable();
+  }
+
+  async submit(form = 'form'): Promise<void> {
+    this.element.querySelector<HTMLButtonElement>(`${form} button[type="submit"]`)!.click();
     await this.fixture.whenStable();
   }
 
