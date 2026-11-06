@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\BpfBuilder.Application.Contracts\BpfBuilder.Application.Contracts.csproj" />
+    <ProjectReference Include="..\BpfBuilder.Domain\BpfBuilder.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

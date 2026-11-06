@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/BpfBuilder.Api/BpfBuilder.Api.csproj" />
+    <Project Path="src/BpfBuilder.Application.Contracts/BpfBuilder.Application.Contracts.csproj" />
+    <Project Path="src/BpfBuilder.Application/BpfBuilder.Application.csproj" />
+    <Project Path="src/BpfBuilder.Domain/BpfBuilder.Domain.csproj" />
+    <Project Path="src/BpfBuilder.Infrastructure/BpfBuilder.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/BpfBuilder.Api.IntegrationTests/BpfBuilder.Api.IntegrationTests.csproj" />
+    <Project Path="tests/BpfBuilder.Application.Tests/BpfBuilder.Application.Tests.csproj" />
+  </Folder>
+</Solution>
