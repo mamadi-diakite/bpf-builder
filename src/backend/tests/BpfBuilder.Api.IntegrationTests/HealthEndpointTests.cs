@@ -1,11 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace BpfBuilder.Api.IntegrationTests;
 
-public sealed class HealthEndpointTests(WebApplicationFactory<Program> factory)
-    : IClassFixture<WebApplicationFactory<Program>>
+public sealed class HealthEndpointTests(BpfBuilderApiFactory factory) : IClassFixture<BpfBuilderApiFactory>
 {
     [Fact]
     public async Task Get_health_returns_ok_status()
