@@ -1,6 +1,8 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using BpfBuilder.Application.Templates;
+using BpfBuilder.Infrastructure.Excel;
 using BpfBuilder.Infrastructure.Persistence;
 
 namespace BpfBuilder.Infrastructure.Tests;
@@ -56,6 +58,14 @@ public sealed class DependencyInjectionTests
 
         Assert.True(await provider.SeedDemoDataAsync());
         Assert.False(await provider.SeedDemoDataAsync());
+    }
+
+    [Fact]
+    public void Registers_the_excel_workbook_writer()
+    {
+        using var provider = new ServiceCollection().AddInfrastructure("Data Source=:memory:").BuildServiceProvider();
+
+        Assert.IsType<ClosedXmlActivityWorkbookWriter>(provider.GetRequiredService<IActivityWorkbookWriter>());
     }
 
     [Theory]

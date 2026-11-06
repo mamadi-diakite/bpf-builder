@@ -4,7 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using BpfBuilder.Application.Organizations;
 using BpfBuilder.Application.Security;
+using BpfBuilder.Application.Templates;
 using BpfBuilder.Application.Users;
+using BpfBuilder.Infrastructure.Excel;
 using BpfBuilder.Infrastructure.Persistence;
 using BpfBuilder.Infrastructure.Security;
 using BpfBuilder.Infrastructure.Seeding;
@@ -23,6 +25,7 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
         services.AddScoped<DemoDataSeeder>();
+        services.AddSingleton<IActivityWorkbookWriter, ClosedXmlActivityWorkbookWriter>();
 
         return services;
     }
